@@ -6,10 +6,12 @@ import net.minecraft.command.ICommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StartFatherLode extends CommandBase {
+import static com.github.BlueNation.FatherLoad.Reference.MODID;
+
+public class StartFatherLoad extends CommandBase {
     private static final List<String> ALIASES =new ArrayList<>();
     static {
-        ALIASES.add("fatherlode");
+        ALIASES.add(MODID);
     }
 
     @Override
