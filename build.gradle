@@ -292,7 +292,7 @@ dependencies {
     runtime name: "CodeChickenLib",     group: "codechicken",       version: ccl_version,       classifier: "dev"
     runtime name: "CodeChickenCore",    group: "codechicken",       version: ccc_version,       classifier: "dev"
     runtime name: "Waila",              group: "mcp.mobius.waila",  version: waila_version
-    runtime name: "inventory-tweaks",   group: "curse.maven",       version: inv_tweaks_version
+    //runtime name: "inventory-tweaks",   group: "curse.maven",       version: inv_tweaks_version
     //Uncomment as part of shadow example
     //shadow  name: "reactor-core",       group: "io.projectreactor", version: reactor_version
 }
