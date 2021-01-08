@@ -1,6 +1,9 @@
 package com.github.BlueNation.FatherLoad;
 
 import com.github.BlueNation.FatherLoad.proxy.CommonProxy;
+import com.github.BlueNation.FatherLoad.world.SidewaysLandBiomes;
+import com.github.BlueNation.FatherLoad.world.SidewaysLandDimensionRegistry;
+import com.github.BlueNation.FatherLoad.world.SidewaysLandWorldRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
@@ -26,6 +29,10 @@ public class FatherLoad {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         modLog = event.getModLog();
+
+        SidewaysLandBiomes.mainRegistry();
+        SidewaysLandDimensionRegistry.mainRegistry();
+        SidewaysLandWorldRegistry.mainRegistry();
     }
 
     @Mod.EventHandler

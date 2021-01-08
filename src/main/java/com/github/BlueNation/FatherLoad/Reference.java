@@ -7,5 +7,7 @@ public final class Reference {
     public static final String NAME = "@NAME@";
     public static final String VERSION = "@VERSION@";
 
+    public static final int SIDEWAYS_LAND_WORLD_ID = 13;
+
     private Reference() {}
 }
