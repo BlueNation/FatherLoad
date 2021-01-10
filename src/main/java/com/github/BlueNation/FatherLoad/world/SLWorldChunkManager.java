@@ -115,7 +115,7 @@ public class SLWorldChunkManager extends WorldChunkManager {
 
         for (int i1 = 0; i1 < par4 * par5; ++i1)
         {
-            float f = (float) BiomeGenBase.getBiomeGenArray()[aint[i1]].temperature / 65536.0F;
+            float f = BiomeGenBase.getBiomeGenArray()[aint[i1]].temperature / 65536.0F;
 
             if (f > 1.0F)
             {

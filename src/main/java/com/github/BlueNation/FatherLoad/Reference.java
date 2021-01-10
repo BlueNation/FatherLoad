@@ -1,5 +1,7 @@
 package com.github.BlueNation.FatherLoad;
 
+import net.minecraft.util.EnumChatFormatting;
+
 public final class Reference {
     //The values are filled by the ForgeGradle 1.2 replace method.
     //The location of this file must be defined in gradle.properties under project_reference
@@ -10,8 +12,18 @@ public final class Reference {
     public static final String SIDEWAYS_LAND_NAME = "Sideways Land";
     public static final int SIDEWAYS_LAND_WORLD_ID = 13;
     public static final int SIDEWAYS_LAND_SURFACE_BIOME_ID = 141;
+
     public static final int PLAY_LEVEL = 96;
     public static final int PLAY_LEVEL_TOP = PLAY_LEVEL + 4;//exclusive like iterators
+
+    public static final String MARKING =
+            EnumChatFormatting.BLUE + "Father" +
+                    EnumChatFormatting.DARK_BLUE + "Load" +
+                    EnumChatFormatting.BLUE + ": Industries";
+    public static final String MARKING_DEBUG =
+            EnumChatFormatting.BLUE + "Father" +
+                    EnumChatFormatting.DARK_BLUE + "Load" +
+                    EnumChatFormatting.BLUE + ": Outdustries";
 
     private Reference() {}
 }

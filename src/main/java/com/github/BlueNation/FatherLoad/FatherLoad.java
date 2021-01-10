@@ -1,9 +1,8 @@
 package com.github.BlueNation.FatherLoad;
 
 import com.github.BlueNation.FatherLoad.proxy.CommonProxy;
-import com.github.BlueNation.FatherLoad.world.SLBiomes;
-import com.github.BlueNation.FatherLoad.world.SLDimensionRegistry;
-import com.github.BlueNation.FatherLoad.world.SLWorldRegistry;
+import com.github.BlueNation.FatherLoad.thing.item.DebugDrill;
+import com.github.BlueNation.FatherLoad.world.*;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
@@ -26,10 +25,14 @@ public class FatherLoad {
 
     public static Logger modLog;
 
+    public static FatherLoadTab fatherLoadTab;
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         modLog = event.getModLog();
+        fatherLoadTab=new FatherLoadTab(MODID);
 
+        DebugDrill.mainRegistry();
         SLBiomes.mainRegistry();
         SLDimensionRegistry.mainRegistry();
         SLWorldRegistry.mainRegistry();
@@ -37,7 +40,6 @@ public class FatherLoad {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-
     }
 
     @Mod.EventHandler

@@ -45,7 +45,7 @@ public class StartFatherLoad extends CommandBase {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
+    public List<?> addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
         return super.addTabCompletionOptions(p_71516_1_, p_71516_2_);
     }
 }
