@@ -4,8 +4,8 @@ import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 import net.minecraft.world.gen.layer.GenLayerZoom;
 
-public class SidewaysLandGenerateLayer extends GenLayer {
-    public SidewaysLandGenerateLayer(long seed) {
+public class SLGenerateLayer extends GenLayer {
+    public SLGenerateLayer(long seed) {
         super(seed);
     }
 
@@ -15,7 +15,7 @@ public class SidewaysLandGenerateLayer extends GenLayer {
     }
 
     public static GenLayer[] makeTheWorld(long seed) {
-        GenLayer biomes = new SidewaysLandGenerateLayerBiomes(1L);
+        GenLayer biomes = new SLGenerateLayerBiomes(1L);
 
         // more GenLayerZoom = bigger biomes
         biomes = new GenLayerZoom(1000L, biomes);

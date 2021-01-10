@@ -4,15 +4,10 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
-public class SidewaysLandGenerateLayerBiomes extends GenLayer {
-    protected BiomeGenBase[] allowedBiomes = {SidewaysLandBiomes.instanceOfBiomeGenSidewaysLandSurface};
+public class SLGenerateLayerBiomes extends GenLayer {
+    protected BiomeGenBase[] allowedBiomes = {SLBiomes.instanceOfBiomeGenSidewaysLandSurface};
 
-    public SidewaysLandGenerateLayerBiomes(long seed, GenLayer genlayer) {
-        super(seed);
-        this.parent = genlayer;
-    }
-
-    public SidewaysLandGenerateLayerBiomes(long seed) {
+    public SLGenerateLayerBiomes(long seed) {
         super(seed);
     }
 

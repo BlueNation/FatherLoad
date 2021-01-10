@@ -15,26 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SidewaysLandWorldChunkManager extends WorldChunkManager {
+//TODO Clean
+public class SLWorldChunkManager extends WorldChunkManager {
     private GenLayer myGenBiomes;
     private GenLayer myBiomeIndexLayer;
     private final BiomeCache myBiomeCache;
     private final List<BiomeGenBase> myBiomesToSpawnIn;
 
-    public SidewaysLandWorldChunkManager() {
+    public SLWorldChunkManager() {
         this.myBiomeCache = new BiomeCache(this);
         this.myBiomesToSpawnIn = new ArrayList<>();
-        this.myBiomesToSpawnIn.add(SidewaysLandBiomes.instanceOfBiomeGenSidewaysLandSurface);
+        this.myBiomesToSpawnIn.add(SLBiomes.instanceOfBiomeGenSidewaysLandSurface);
     }
 
-    public SidewaysLandWorldChunkManager(long seed, WorldType worldType) {
+    public SLWorldChunkManager(long seed, WorldType worldType) {
         this();
-        GenLayer[] agenlayer = SidewaysLandGenerateLayer.makeTheWorld(seed);
+        GenLayer[] agenlayer = SLGenerateLayer.makeTheWorld(seed);
         this.myGenBiomes = agenlayer[0];
         this.myBiomeIndexLayer = agenlayer[1];
     }
 
-    public SidewaysLandWorldChunkManager(World world) {
+    public SLWorldChunkManager(World world) {
         this(world.getSeed(), world.provider.terrainType);
     }
 
@@ -53,7 +54,7 @@ public class SidewaysLandWorldChunkManager extends WorldChunkManager {
     public BiomeGenBase getBiomeGenAt(int x, int z) {
         BiomeGenBase biome = this.myBiomeCache.getBiomeGenAt(x, z);
         if (biome == null) {
-            return SidewaysLandBiomes.instanceOfBiomeGenSidewaysLandSurface;
+            return SLBiomes.instanceOfBiomeGenSidewaysLandSurface;
         }
 
         return biome;
@@ -150,7 +151,7 @@ public class SidewaysLandWorldChunkManager extends WorldChunkManager {
             else
             {
                 //Change this to a biome
-                par1ArrayOfBiomeGenBase[i] = SidewaysLandBiomes.instanceOfBiomeGenSidewaysLandSurface;
+                par1ArrayOfBiomeGenBase[i] = SLBiomes.instanceOfBiomeGenSidewaysLandSurface;
             }
         }
 
@@ -198,7 +199,7 @@ public class SidewaysLandWorldChunkManager extends WorldChunkManager {
                     par1ArrayOfBiomeGenBase[i] = BiomeGenBase.getBiomeGenArray()[aint[i]];
                 } else {
                     //Change this to a biome
-                    par1ArrayOfBiomeGenBase[i] = SidewaysLandBiomes.instanceOfBiomeGenSidewaysLandSurface;
+                    par1ArrayOfBiomeGenBase[i] = SLBiomes.instanceOfBiomeGenSidewaysLandSurface;
                 }
             }
 

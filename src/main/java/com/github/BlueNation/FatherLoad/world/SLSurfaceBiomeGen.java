@@ -3,8 +3,8 @@ package com.github.BlueNation.FatherLoad.world;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeGenBase;
 
-public class SidewaysLandSurfaceBiomeGen extends BiomeGenBase {
-    public SidewaysLandSurfaceBiomeGen(int biomeId) {
+public class SLSurfaceBiomeGen extends BiomeGenBase {
+    public SLSurfaceBiomeGen(int biomeId) {
         super(biomeId);
         this.setTemperatureRainfall(1.2F, 0.9F);
         this.setColor(2900485);

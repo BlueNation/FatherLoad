@@ -4,13 +4,13 @@ import net.minecraftforge.common.DimensionManager;
 
 import static com.github.BlueNation.FatherLoad.Reference.SIDEWAYS_LAND_WORLD_ID;
 
-public class SidewaysLandDimensionRegistry {
+public class SLDimensionRegistry {
     public static void mainRegistry() {
         registerDimension();
     }
 
     private static void registerDimension() {
-        DimensionManager.registerProviderType(SIDEWAYS_LAND_WORLD_ID, SidewaysLandWorldProvider.class, false);
+        DimensionManager.registerProviderType(SIDEWAYS_LAND_WORLD_ID, SLWorldProvider.class, false);
         DimensionManager.registerDimension(SIDEWAYS_LAND_WORLD_ID, SIDEWAYS_LAND_WORLD_ID);
     }
 }
