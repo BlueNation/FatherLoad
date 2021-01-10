@@ -43,8 +43,6 @@ public class DebugDrill extends Item {
     public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world,
                              int x, int y, int z, int side,
                              float hitX, float hitY, float hitZ) {
-        int[] abc = BigBlockHandler.getABC(x, y, z);
-        BigBlockHandler.destroyBigBlockInWorldPartially(world,abc[0],abc[1],abc[2],-1,entityPlayer.getAge()%10);
         return false;
     }
 

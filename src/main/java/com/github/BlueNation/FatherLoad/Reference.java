@@ -8,7 +8,6 @@ public final class Reference {
     public static final String MODID = "@MODID@";
     public static final String NAME = "@NAME@";
     public static final String VERSION = "@VERSION@";
-    public static final int SIDEWAYS_LAND_WORLD_ID = 69;
 
     public static final String MARKING =
             EnumChatFormatting.BLUE + "Father" +
@@ -18,6 +17,8 @@ public final class Reference {
             EnumChatFormatting.BLUE + "Father" +
                     EnumChatFormatting.DARK_BLUE + "Load" +
                     EnumChatFormatting.BLUE + ": Outdustries";
+
+    public static final int SIDEWAYS_LAND_WORLD_ID = 13;
 
     private Reference() {}
 }

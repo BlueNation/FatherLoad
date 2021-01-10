@@ -5,7 +5,6 @@ import net.minecraftforge.common.DimensionManager;
 import static com.github.BlueNation.FatherLoad.Reference.SIDEWAYS_LAND_WORLD_ID;
 
 public class SidewaysLandDimensionRegistry {
-
     public static void mainRegistry() {
         registerDimension();
     }

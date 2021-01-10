@@ -9,9 +9,7 @@ import net.minecraft.world.gen.ChunkProviderFlat;
  * Chunk provider
  */
 public class SidewaysLandChunkProvider extends ChunkProviderFlat {
-    public SidewaysLandChunkProvider(World world,
-                                     long seed,
-                                     String flatGeneratorString) {
+    public SidewaysLandChunkProvider(World world, long seed, String flatGeneratorString) {
         super(world, seed, false, flatGeneratorString);
     }
 
