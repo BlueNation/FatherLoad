@@ -52,7 +52,7 @@ public class DebugDrill extends Item {
         return false;//prevent harvesting
     }
 
-    //when post-break serv/client
+    //when break serv/client
     @Override
     public boolean onBlockDestroyed(ItemStack itemStack, World world, Block block,
                                     int x, int y, int z,
