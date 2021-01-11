@@ -81,6 +81,7 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    @Override
     public void renderDrillingParticlesOn(World w,double hitX, double hitY, double hitZ, ForgeDirection side, Block block, int meta){
         for (int i = 0; i < 8; i++) {
             FatherLoad.proxy.sparkParticle(w, hitX, hitY, hitZ, side);
