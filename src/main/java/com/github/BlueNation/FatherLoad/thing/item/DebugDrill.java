@@ -5,6 +5,7 @@ import com.github.BlueNation.FatherLoad.Reference;
 import com.github.BlueNation.FatherLoad.mechanics.BigBlockHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,6 +36,7 @@ public class DebugDrill extends Item {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer entityPlayer, World world,
                                   int x, int y, int z, int side,
                                   float hitX, float hitY, float hitZ) {
+        //FatherLoad.proxy.bigBlockBreakingParticle(world, x,y,z, side, getMaxItemUseDuration(stack));
         return false;
     }
 
@@ -85,6 +87,8 @@ public class DebugDrill extends Item {
     public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
         if(count<getMaxItemUseDuration(stack)){
             //duration -1 times
+            if(player instanceof EntityClientPlayerMP)
+                FatherLoad.proxy.renderDrillingParticlesOn(player);//Force run only on client side of client
         }else {
             //final tick
         }

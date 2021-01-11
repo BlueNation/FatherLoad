@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 public class BigBlockHandler {
     public static final int SHIFT_VALUE=2;
     public static final int BLOCK_SIZE=1<<SHIFT_VALUE;
+    public static final int BLOCK_HALF_SIZE=BLOCK_SIZE>>1;
     public static final int OFFSET_PROBE=1;
 
     public static int getAligned(int xyz){
