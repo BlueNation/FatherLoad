@@ -1,11 +1,17 @@
 package com.github.BlueNation.FatherLoad;
 
+import com.github.BlueNation.FatherLoad.client.renderer.entity.RenderDriller;
+import com.github.BlueNation.FatherLoad.entities.EntityDriller;
+import com.github.BlueNation.FatherLoad.models.ModelDriller;
 import com.github.BlueNation.FatherLoad.proxy.CommonProxy;
 import com.github.BlueNation.FatherLoad.thing.item.DebugDrill;
+import com.github.BlueNation.FatherLoad.thing.item.DebugDrillerPlacer;
 import com.github.BlueNation.FatherLoad.world.*;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import org.apache.logging.log4j.Logger;
 
 import static com.github.BlueNation.FatherLoad.Reference.MODID;
@@ -30,12 +36,22 @@ public class FatherLoad {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         modLog = event.getModLog();
-        fatherLoadTab=new FatherLoadTab(MODID);
+        fatherLoadTab = new FatherLoadTab(MODID);
 
+        //Debug Items
         DebugDrill.mainRegistry();
+        DebugDrillerPlacer.mainRegistry();
+
+        //WorldGen
         SLBiomes.mainRegistry();
         SLDimensionRegistry.mainRegistry();
         SLWorldRegistry.mainRegistry();
+
+        // FIXME: 11/01/2021 This actually belongs the client proxy
+        RenderingRegistry.registerEntityRenderingHandler(EntityDriller.class, new RenderDriller(new ModelDriller()));
+
+        //Entities
+        EntityRegistry.registerModEntity(EntityDriller.class, "driller",100, instance, 100,1000,true);
     }
 
     @Mod.EventHandler
