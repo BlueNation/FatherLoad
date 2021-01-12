@@ -10,8 +10,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -41,12 +39,11 @@ public class RenderDriller extends Render {
     private float interpolateRotation(float angleA, float angleB, float ratio) {
         float delta = angleB - angleA;
 
+        //Clamp the delta between -180F and 180F
         while (delta < -180.0F) {
             delta += 360.0F;
         }
-
-        while (delta >= 180.0F)
-        {
+        while (delta >= 180.0F) {
             delta -= 360.0F;
         }
 
@@ -59,34 +56,34 @@ public class RenderDriller extends Render {
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(EntityLivingBase p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
+    public void doRender(EntityLivingBase entity, double posX, double posY, double posZ, float p_76986_8_, float p_76986_9_) {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
-        this.mainModel.onGround = this.renderSwingProgress(p_76986_1_, p_76986_9_);
+        this.mainModel.onGround = this.renderSwingProgress(entity, p_76986_9_);
 
         if (this.renderPassModel != null) {
             this.renderPassModel.onGround = this.mainModel.onGround;
         }
 
-        this.mainModel.isRiding = p_76986_1_.isRiding();
+        this.mainModel.isRiding = entity.isRiding();
 
         if (this.renderPassModel != null) {
             this.renderPassModel.isRiding = this.mainModel.isRiding;
         }
 
-        this.mainModel.isChild = p_76986_1_.isChild();
+        this.mainModel.isChild = entity.isChild();
 
         if (this.renderPassModel != null) {
             this.renderPassModel.isChild = this.mainModel.isChild;
         }
 
         try {
-            float f2 = this.interpolateRotation(p_76986_1_.prevRenderYawOffset, p_76986_1_.renderYawOffset, p_76986_9_);
-            float f3 = this.interpolateRotation(p_76986_1_.prevRotationYawHead, p_76986_1_.rotationYawHead, p_76986_9_);
+            float f2 = this.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, p_76986_9_);
+            float f3 = this.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, p_76986_9_);
             float f4;
 
-            if (p_76986_1_.isRiding() && p_76986_1_.ridingEntity instanceof EntityLivingBase) {
-                EntityLivingBase entitylivingbase1 = (EntityLivingBase) p_76986_1_.ridingEntity;
+            if (entity.isRiding() && entity.ridingEntity instanceof EntityLivingBase) {
+                EntityLivingBase entitylivingbase1 = (EntityLivingBase) entity.ridingEntity;
                 f2 = this.interpolateRotation(entitylivingbase1.prevRenderYawOffset, entitylivingbase1.renderYawOffset, p_76986_9_);
                 f4 = MathHelper.wrapAngleTo180_float(f3 - f2);
 
@@ -105,19 +102,18 @@ public class RenderDriller extends Render {
                 }
             }
 
-            float f13 = p_76986_1_.prevRotationPitch + (p_76986_1_.rotationPitch - p_76986_1_.prevRotationPitch) * p_76986_9_;
-            this.renderDrillerAt(p_76986_2_, p_76986_4_, p_76986_6_);
-            f4 = this.handleRotationFloat(p_76986_1_, p_76986_9_);
-            this.rotateCorpse(p_76986_1_, f4, f2, p_76986_9_);
+            float f13 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * p_76986_9_;
+            this.renderDrillerAt(posX, posY, posZ);
+            f4 = this.handleRotationFloat(entity, p_76986_9_);
+            this.rotateDriller(f2);
             float f5 = 0.0625F;
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(-1.0F, -1.0F, 1.0F);
-            this.preRenderCallback(p_76986_1_, p_76986_9_);
             GL11.glTranslatef(0.0F, -24.0F * f5 - 0.0078125F, 0.0F);
-            float f6 = p_76986_1_.prevLimbSwingAmount + (p_76986_1_.limbSwingAmount - p_76986_1_.prevLimbSwingAmount) * p_76986_9_;
-            float f7 = p_76986_1_.limbSwing - p_76986_1_.limbSwingAmount * (1.0F - p_76986_9_);
+            float f6 = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * p_76986_9_;
+            float f7 = entity.limbSwing - entity.limbSwingAmount * (1.0F - p_76986_9_);
 
-            if (p_76986_1_.isChild()) {
+            if (entity.isChild()) {
                 f7 *= 3.0F;
             }
 
@@ -126,106 +122,24 @@ public class RenderDriller extends Render {
             }
 
             GL11.glEnable(GL11.GL_ALPHA_TEST);
-            this.mainModel.setLivingAnimations(p_76986_1_, f7, f6, p_76986_9_);
-            this.renderModel(p_76986_1_, f7, f6, f4, f3 - f2, f13, f5);
-            int j;
-            float f8;
-            float f9;
-            float f10;
-
-            for (int i = 0; i < 4; ++i) {
-                j = this.shouldRenderPass(p_76986_1_, i, p_76986_9_);
-
-                if (j > 0) {
-                    this.renderPassModel.setLivingAnimations(p_76986_1_, f7, f6, p_76986_9_);
-                    this.renderPassModel.render(p_76986_1_, f7, f6, f4, f3 - f2, f13, f5);
-
-                    if ((j & 240) == 16) {
-                        this.func_82408_c(p_76986_1_, i, p_76986_9_);
-                        this.renderPassModel.render(p_76986_1_, f7, f6, f4, f3 - f2, f13, f5);
-                    }
-
-                    if ((j & 15) == 15) {
-                        f8 = (float) p_76986_1_.ticksExisted + p_76986_9_;
-                        this.bindTexture(RES_ITEM_GLINT);
-                        GL11.glEnable(GL11.GL_BLEND);
-                        f9 = 0.5F;
-                        GL11.glColor4f(f9, f9, f9, 1.0F);
-                        GL11.glDepthFunc(GL11.GL_EQUAL);
-                        GL11.glDepthMask(false);
-
-                        for (int k = 0; k < 2; ++k) {
-                            GL11.glDisable(GL11.GL_LIGHTING);
-                            f10 = 0.76F;
-                            GL11.glColor4f(0.5F * f10, 0.25F * f10, 0.8F * f10, 1.0F);
-                            GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
-                            GL11.glMatrixMode(GL11.GL_TEXTURE);
-                            GL11.glLoadIdentity();
-                            float f11 = f8 * (0.001F + (float) k * 0.003F) * 20.0F;
-                            float f12 = 0.33333334F;
-                            GL11.glScalef(f12, f12, f12);
-                            GL11.glRotatef(30.0F - (float) k * 60.0F, 0.0F, 0.0F, 1.0F);
-                            GL11.glTranslatef(0.0F, f11, 0.0F);
-                            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                            this.renderPassModel.render(p_76986_1_, f7, f6, f4, f3 - f2, f13, f5);
-                        }
-
-                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                        GL11.glMatrixMode(GL11.GL_TEXTURE);
-                        GL11.glDepthMask(true);
-                        GL11.glLoadIdentity();
-                        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                        GL11.glEnable(GL11.GL_LIGHTING);
-                        GL11.glDisable(GL11.GL_BLEND);
-                        GL11.glDepthFunc(GL11.GL_LEQUAL);
-                    }
-
-                    GL11.glDisable(GL11.GL_BLEND);
-                    GL11.glEnable(GL11.GL_ALPHA_TEST);
-                }
-            }
-
+            this.mainModel.setLivingAnimations(entity, f7, f6, p_76986_9_);
+            this.renderModel(entity, f7, f6, f4, f3 - f2, f13, f5);
             GL11.glDepthMask(true);
-            this.renderEquippedItems(p_76986_1_, p_76986_9_);
-            float f14 = p_76986_1_.getBrightness(p_76986_9_);
-            j = this.getColorMultiplier(p_76986_1_, f14, p_76986_9_);
+            float f14 = entity.getBrightness(p_76986_9_);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
 
-            if ((j >> 24 & 255) > 0 || p_76986_1_.hurtTime > 0 || p_76986_1_.deathTime > 0) {
+            if (entity.hurtTime > 0 || entity.deathTime > 0) {
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GL11.glDepthFunc(GL11.GL_EQUAL);
 
-                if (p_76986_1_.hurtTime > 0 || p_76986_1_.deathTime > 0) {
+                if (entity.hurtTime > 0 || entity.deathTime > 0) {
                     GL11.glColor4f(f14, 0.0F, 0.0F, 0.4F);
-                    this.mainModel.render(p_76986_1_, f7, f6, f4, f3 - f2, f13, f5);
-
-                    for (int l = 0; l < 4; ++l) {
-                        if (this.inheritRenderPass(p_76986_1_, l, p_76986_9_) >= 0) {
-                            GL11.glColor4f(f14, 0.0F, 0.0F, 0.4F);
-                            this.renderPassModel.render(p_76986_1_, f7, f6, f4, f3 - f2, f13, f5);
-                        }
-                    }
-                }
-
-                if ((j >> 24 & 255) > 0) {
-                    f8 = (float) (j >> 16 & 255) / 255.0F;
-                    f9 = (float) (j >> 8 & 255) / 255.0F;
-                    float f15 = (float) (j & 255) / 255.0F;
-                    f10 = (float) (j >> 24 & 255) / 255.0F;
-                    GL11.glColor4f(f8, f9, f15, f10);
-                    this.mainModel.render(p_76986_1_, f7, f6, f4, f3 - f2, f13, f5);
-
-                    for (int i1 = 0; i1 < 4; ++i1) {
-                        if (this.inheritRenderPass(p_76986_1_, i1, p_76986_9_) >= 0) {
-                            GL11.glColor4f(f8, f9, f15, f10);
-                            this.renderPassModel.render(p_76986_1_, f7, f6, f4, f3 - f2, f13, f5);
-                        }
-                    }
+                    this.mainModel.render(entity, f7, f6, f4, f3 - f2, f13, f5);
                 }
 
                 GL11.glDepthFunc(GL11.GL_LEQUAL);
@@ -243,19 +157,15 @@ public class RenderDriller extends Render {
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
-        this.passSpecialRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_);
+        this.passSpecialRender(entity, posX, posY, posZ);
     }
 
-    protected void renderModel(EntityLivingBase p_77036_1_, float p_77036_2_, float p_77036_3_, float p_77036_4_, float p_77036_5_, float p_77036_6_, float p_77036_7_)
-    {
+    protected void renderModel(EntityLivingBase p_77036_1_, float p_77036_2_, float p_77036_3_, float p_77036_4_, float p_77036_5_, float p_77036_6_, float p_77036_7_) {
         this.bindEntityTexture(p_77036_1_);
 
-        if (!p_77036_1_.isInvisible())
-        {
+        if (!p_77036_1_.isInvisible()) {
             this.mainModel.render(p_77036_1_, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
-        }
-        else if (!p_77036_1_.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer))
-        {
+        } else if (!p_77036_1_.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) {
             GL11.glPushMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
             GL11.glDepthMask(false);
@@ -267,109 +177,50 @@ public class RenderDriller extends Render {
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             GL11.glPopMatrix();
             GL11.glDepthMask(true);
-        }
-        else
-        {
+        } else {
             this.mainModel.setRotationAngles(p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_, p_77036_1_);
         }
     }
 
-    /**
-     * Sets a simple glTranslate on a LivingEntity.
-     */
+    //Translate the rendering to where the driller is
     protected void renderDrillerAt(double p_77039_2_, double p_77039_4_, double p_77039_6_) {
         GL11.glTranslatef((float) p_77039_2_, (float) p_77039_4_, (float) p_77039_6_);
     }
 
-    protected void rotateCorpse(EntityLivingBase p_77043_1_, float p_77043_2_, float p_77043_3_, float p_77043_4_) {
-        GL11.glRotatef(180.0F - p_77043_3_, 0.0F, 1.0F, 0.0F);
-
-        if (p_77043_1_.deathTime > 0) {
-            float f3 = ((float) p_77043_1_.deathTime + p_77043_4_ - 1.0F) / 20.0F * 1.6F;
-            f3 = MathHelper.sqrt_float(f3);
-
-            if (f3 > 1.0F) {
-                f3 = 1.0F;
-            }
-
-            GL11.glRotatef(f3 * this.getDeathMaxRotation(p_77043_1_), 0.0F, 0.0F, 1.0F);
-        } else {
-            String s = EnumChatFormatting.getTextWithoutFormattingCodes(p_77043_1_.getCommandSenderName());
-
-            if ((s.equals("Dinnerbone") || s.equals("Grumm")) && (!(p_77043_1_ instanceof EntityPlayer) || !((EntityPlayer) p_77043_1_).getHideCape())) {
-                GL11.glTranslatef(0.0F, p_77043_1_.height + 0.1F, 0.0F);
-                GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-            }
-        }
+    //Rotate the driller to where it's looking
+    protected void rotateDriller(float rotZ) {
+        GL11.glRotatef(180.0F - rotZ, 0.0F, 1.0F, 0.0F);
     }
 
-    protected float renderSwingProgress(EntityLivingBase p_77040_1_, float p_77040_2_) {
-        return p_77040_1_.getSwingProgress(p_77040_2_);
+    protected float renderSwingProgress(EntityLivingBase entity, float p_77040_2_) {
+        return entity.getSwingProgress(p_77040_2_);
     }
 
     /**
      * Defines what float the third param in setRotationAngles of ModelBase is
      */
-    protected float handleRotationFloat(EntityLivingBase p_77044_1_, float p_77044_2_) {
-        return (float)p_77044_1_.ticksExisted + p_77044_2_;
-    }
-
-    protected void renderEquippedItems(EntityLivingBase p_77029_1_, float p_77029_2_) {}
-
-
-    protected int inheritRenderPass(EntityLivingBase p_77035_1_, int p_77035_2_, float p_77035_3_) {
-        return this.shouldRenderPass(p_77035_1_, p_77035_2_, p_77035_3_);
-    }
-
-    /**
-     * Queries whether should render the specified pass or not.
-     */
-    protected int shouldRenderPass(EntityLivingBase p_77032_1_, int p_77032_2_, float p_77032_3_) {
-        return -1;
-    }
-
-    protected void func_82408_c(EntityLivingBase p_82408_1_, int p_82408_2_, float p_82408_3_) {}
-
-    protected float getDeathMaxRotation(EntityLivingBase p_77037_1_) {
-        return 90.0F;
-    }
-
-    /**
-     * Returns an ARGB int color back. Args: entityLiving, lightBrightness, partialTickTime
-     */
-    protected int getColorMultiplier(EntityLivingBase p_77030_1_, float p_77030_2_, float p_77030_3_) {
-        return 0;
-    }
-
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase p_77041_1_, float p_77041_2_) {
-
+    protected float handleRotationFloat(EntityLivingBase entity, float p_77044_2_) {
+        return (float)entity.ticksExisted + p_77044_2_;
     }
 
     /**
      * Passes the specialRender and renders it
      */
-    protected void passSpecialRender(EntityLivingBase p_77033_1_, double p_77033_2_, double p_77033_4_, double p_77033_6_) {
+    protected void passSpecialRender(EntityLivingBase entity, double posX, double posY, double posZ) {
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-        if (this.func_110813_b(p_77033_1_))
-        {
+        if (this.func_110813_b(entity)) {
             float f = 1.6F;
             float f1 = 0.016666668F * f;
-            double d3 = p_77033_1_.getDistanceSqToEntity(this.renderManager.livingPlayer);
+            double d3 = entity.getDistanceSqToEntity(this.renderManager.livingPlayer);
             float f2 = 64;//
 
-            if (d3 < (double)(f2 * f2))
-            {
-                String s = p_77033_1_.func_145748_c_().getFormattedText();
+            if (d3 < (double) (f2 * f2)) {
+                String s = entity.func_145748_c_().getFormattedText();
 
-                if (p_77033_1_.isSneaking())
-                {
+                if (entity.isSneaking()) {
                     FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
                     GL11.glPushMatrix();
-                    GL11.glTranslatef((float)p_77033_2_ + 0.0F, (float)p_77033_4_ + p_77033_1_.height + 0.5F, (float)p_77033_6_);
+                    GL11.glTranslatef((float) posX + 0.0F, (float) posY + entity.height + 0.5F, (float) posZ);
                     GL11.glNormal3f(0.0F, 1.0F, 0.0F);
                     GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
                     GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
@@ -384,10 +235,10 @@ public class RenderDriller extends Render {
                     tessellator.startDrawingQuads();
                     int i = fontrenderer.getStringWidth(s) / 2;
                     tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-                    tessellator.addVertex((double)(-i - 1), -1.0D, 0.0D);
-                    tessellator.addVertex((double)(-i - 1), 8.0D, 0.0D);
-                    tessellator.addVertex((double)(i + 1), 8.0D, 0.0D);
-                    tessellator.addVertex((double)(i + 1), -1.0D, 0.0D);
+                    tessellator.addVertex((double) (-i - 1), -1.0D, 0.0D);
+                    tessellator.addVertex((double) (-i - 1), 8.0D, 0.0D);
+                    tessellator.addVertex((double) (i + 1), 8.0D, 0.0D);
+                    tessellator.addVertex((double) (i + 1), -1.0D, 0.0D);
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                     GL11.glDepthMask(true);
@@ -396,27 +247,23 @@ public class RenderDriller extends Render {
                     GL11.glDisable(GL11.GL_BLEND);
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                     GL11.glPopMatrix();
-                }
-                else
-                {
-                    this.func_96449_a(p_77033_1_, p_77033_2_, p_77033_4_, p_77033_6_, s, f1, d3);
+                } else {
+                    this.func_96449_a(entity, posX, posY, posZ, s, f1, d3);
                 }
             }
         }
     }
 
-    protected boolean func_110813_b(EntityLivingBase p_110813_1_) {
-        return Minecraft.isGuiEnabled() && p_110813_1_ != this.renderManager.livingPlayer && !p_110813_1_.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer) && p_110813_1_.riddenByEntity == null;
+    protected boolean func_110813_b(EntityLivingBase entity) {
+        return Minecraft.isGuiEnabled() && entity != this.renderManager.livingPlayer &&
+                !entity.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer) && entity.riddenByEntity == null;
     }
 
-    protected void func_96449_a(EntityLivingBase p_96449_1_, double p_96449_2_, double p_96449_4_, double p_96449_6_, String p_96449_8_, float p_96449_9_, double p_96449_10_) {
-        if (p_96449_1_.isPlayerSleeping())
-        {
-            this.func_147906_a(p_96449_1_, p_96449_8_, p_96449_2_, p_96449_4_ - 1.5D, p_96449_6_, 64);
-        }
-        else
-        {
-            this.func_147906_a(p_96449_1_, p_96449_8_, p_96449_2_, p_96449_4_, p_96449_6_, 64);
+    protected void func_96449_a(EntityLivingBase entity, double p_96449_2_, double p_96449_4_, double p_96449_6_, String p_96449_8_, float p_96449_9_, double p_96449_10_) {
+        if (entity.isPlayerSleeping()) {
+            this.func_147906_a(entity, p_96449_8_, p_96449_2_, p_96449_4_ - 1.5D, p_96449_6_, 64);
+        } else {
+            this.func_147906_a(entity, p_96449_8_, p_96449_2_, p_96449_4_, p_96449_6_, 64);
         }
     }
 
@@ -428,7 +275,7 @@ public class RenderDriller extends Render {
      */
     @Override
     public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
-        this.doRender((EntityLivingBase)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+        this.doRender((EntityLivingBase) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }
 
     @Override
