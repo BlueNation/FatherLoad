@@ -51,7 +51,7 @@ public class FatherLoad {
         RenderingRegistry.registerEntityRenderingHandler(EntityDriller.class, new RenderDriller(new ModelDriller()));
 
         //Entities
-        EntityRegistry.registerModEntity(EntityDriller.class, "driller",100, instance, 100,1000,true);
+        EntityRegistry.registerModEntity(EntityDriller.class, "driller",100, instance, 100,1,false);
     }
 
     @Mod.EventHandler
