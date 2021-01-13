@@ -21,19 +21,16 @@ public class RenderDriller extends Render {
     }
 
     @Override
-    public void doRender(Entity entity, double posX, double posY, double posZ, float p_76986_8_, float rotationRatio) {
+    public void doRender(Entity entity, double posX, double posY, double posZ, float rotYaw, float rotationRatio) {
         //Push the matrix to checkpoint changes
         GL11.glPushMatrix();
 
         //Lets faces be textures on both sides
         GL11.glDisable(GL11.GL_CULL_FACE);
 
-        //Get the rotational axis
-        float rotZ = this.interpolateRotation(entity.prevRotationYaw, entity.rotationYaw, rotationRatio);
-
         //Position and rotate the drill
         this.renderDrillerAt(posX, posY, posZ);
-        this.rotateDriller(rotZ);
+        this.rotateDriller(rotYaw);
 
         //Render the model
         this.renderModel(entity);
@@ -60,22 +57,8 @@ public class RenderDriller extends Render {
     }
 
     //Rotate the driller to where it's looking
-    protected void rotateDriller(float rotZ) {
-        GL11.glRotatef(360F - rotZ, 0F, 1F, 0F);
-    }
-
-    private float interpolateRotation(float angleA, float angleB, float ratio) {
-        float delta = angleB - angleA;
-
-        //Clamp the delta between -180F and 180F
-        while (delta < -180.0F) {
-            delta += 360.0F;
-        }
-        while (delta >= 180.0F) {
-            delta -= 360.0F;
-        }
-
-        return angleA + ratio * delta;
+    protected void rotateDriller(float rotYaw) {
+        GL11.glRotatef(rotYaw, 0F, 1F, 0F);
     }
 
     @Override
