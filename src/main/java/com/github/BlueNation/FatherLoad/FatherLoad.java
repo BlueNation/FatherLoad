@@ -1,7 +1,7 @@
 package com.github.BlueNation.FatherLoad;
 
-import com.github.BlueNation.FatherLoad.client.renderer.entity.RenderDriller;
-import com.github.BlueNation.FatherLoad.entities.EntityDriller;
+import com.github.BlueNation.FatherLoad.client.renderer.entity.SidewaysRender;
+import com.github.BlueNation.FatherLoad.entities.EntityVehicle;
 import com.github.BlueNation.FatherLoad.models.ModelDriller;
 import com.github.BlueNation.FatherLoad.proxy.CommonProxy;
 import com.github.BlueNation.FatherLoad.thing.item.DebugDrill;
@@ -48,10 +48,11 @@ public class FatherLoad {
         SLWorldRegistry.mainRegistry();
 
         // FIXME: 11/01/2021 This actually belongs the client proxy
-        RenderingRegistry.registerEntityRenderingHandler(EntityDriller.class, new RenderDriller(new ModelDriller()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityVehicle.class, new SidewaysRender(new ModelDriller(),
+                MODID + ":textures/models/driller.png", 0F));
 
         //Entities
-        EntityRegistry.registerModEntity(EntityDriller.class, "driller",100, instance, 100,1,false);
+        EntityRegistry.registerModEntity(EntityVehicle.class, "driller",100, instance, 100,1,false);
     }
 
     @Mod.EventHandler
