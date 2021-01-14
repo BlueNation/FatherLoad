@@ -4,9 +4,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-public class EntityVehicle extends SidewaysEntity {
+public class EntityDriller extends SidewaysEntity {
 
-    public EntityVehicle(World worldObj) {
+    public EntityDriller(World worldObj) {
         super(worldObj);
 
         //Calculates and sets `this.boundingBox`
@@ -17,6 +17,7 @@ public class EntityVehicle extends SidewaysEntity {
         this.isPushable = false;
         this.isCollidable = false;
         this.isWalkingTrigger = false;
+        this.isGravityAffected = true;
     }
 
 
@@ -25,8 +26,6 @@ public class EntityVehicle extends SidewaysEntity {
      */
     @Override
     public void onUpdate() {
-        super.onUpdate();
-
         if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityLivingBase) {
             EntityLivingBase entity = (EntityLivingBase) this.riddenByEntity;
 
@@ -42,10 +41,7 @@ public class EntityVehicle extends SidewaysEntity {
                 this.rotateEntity(-5);
             }
         }
-
-        this.applyGravity();
-        this.applyForwardVelocity();
-        this.applyMotion();
+        super.onUpdate();
     }
 
     @Override

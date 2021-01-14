@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+import org.lwjgl.opengl.GL11;
 
 import static com.github.BlueNation.FatherLoad.Reference.MODID;
 
@@ -22,7 +23,7 @@ public class ModelDriller extends SimpleModelBase {
     }
 
     @Override
-    public void render(Entity ent, float limbSwingTime, float limbSwingDistance, float limbSwingOffset, float headYaw, float headPitch, float headScale) {
+    public void render(Entity entity, float limbSwingTime, float limbSwingDistance, float limbSwingOffset, float headYaw, float headPitch, float headScale) {
         drillerCabinModel.renderAll();
         drillerTracksModel.renderAll();
         drillerDrillModel.renderAll();

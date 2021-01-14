@@ -47,7 +47,7 @@ public class SimpleRender extends Render {
 
     /**
      * First step of render, disables render culling and pushes matrix
-     *
+     * <p>
      * Disabling render culling here allows planes to be textured on both sides.
      *
      * @param entity   Entity being rendered
@@ -60,21 +60,6 @@ public class SimpleRender extends Render {
     protected void setupRender(Entity entity, double posX, double posY, double posZ, float rotYaw, float rotRatio) {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
-    }
-
-    /**
-     * Binds the texture to the entity and renders the model
-     *
-     * @param entity   Entity being rendered
-     * @param posX     Entity X position
-     * @param posY     Entity Y position
-     * @param posZ     Entity Z position
-     * @param rotYaw   Entity yaw rotation in the world
-     * @param rotRatio Rotation ratio of the entity
-     */
-    protected void renderModel(Entity entity, double posX, double posY, double posZ, float rotYaw, float rotRatio) {
-        this.bindEntityTexture(entity);
-        this.model.render(entity, 0F, 0F, 0F, 0F, 0F, 0F);
     }
 
     /**
@@ -103,6 +88,21 @@ public class SimpleRender extends Render {
      */
     protected void rotateRender(Entity entity, double posX, double posY, double posZ, float rotYaw, float rotRatio) {
         GL11.glRotatef(rotYaw, 0F, 1F, 0F);
+    }
+
+    /**
+     * Binds the texture to the entity and renders the model
+     *
+     * @param entity   Entity being rendered
+     * @param posX     Entity X position
+     * @param posY     Entity Y position
+     * @param posZ     Entity Z position
+     * @param rotYaw   Entity yaw rotation in the world
+     * @param rotRatio Rotation ratio of the entity
+     */
+    protected void renderModel(Entity entity, double posX, double posY, double posZ, float rotYaw, float rotRatio) {
+        this.bindEntityTexture(entity);
+        this.model.render(entity, 0F, 0F, 0F, 0F, 0F, 0F);
     }
 
     /**
