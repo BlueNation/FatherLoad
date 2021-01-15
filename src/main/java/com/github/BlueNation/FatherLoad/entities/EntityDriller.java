@@ -15,9 +15,9 @@ public class EntityDriller extends SidewaysEntity {
 
         this.isAttackable = true;
         this.isPushable = false;
-        this.isCollidable = false;
-        this.isWalkingTrigger = false;
-        this.isGravityAffected = true;
+        this.canCollide = false;
+        this.canTrampleCrops = false;
+        this.isGravityEnabled = true;
     }
 
 
