@@ -20,6 +20,23 @@ public class SidewaysRender extends SimpleRender {
     }
 
     /**
+     * Translate render position to the X, Y and Z pos
+     *
+     * @param entity   Entity being rendered
+     * @param posX     Entity X position
+     * @param posY     Entity Y position
+     * @param posZ     Entity Z position
+     * @param rotYaw   Entity yaw rotation in the world
+     * @param rotRatio Rotation ratio of the entity
+     */
+    @Override
+    protected void translateRender(Entity entity, double posX, double posY, double posZ, float rotYaw, float rotRatio) {
+        super.translateRender(entity, posX, posY, posZ, rotYaw, rotRatio);
+        float halfWidth = entity.width / 2;
+        GL11.glTranslatef(halfWidth, halfWidth, 0);
+    }
+
+    /**
      * Rotate render by setting the yaw on the X axis and rotating 90 degrees on the Z axis
      *
      * @param entity   Entity being rendered

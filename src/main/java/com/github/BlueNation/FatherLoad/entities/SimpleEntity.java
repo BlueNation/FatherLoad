@@ -35,6 +35,9 @@ public class SimpleEntity extends Entity {
     protected boolean isCollidedNegativeY;
     protected boolean isCollidedNegativeZ;
     //Extra fields
+    protected double motionClampX;
+    protected double motionClampY;
+    protected double motionClampZ;
     protected double gravityAccel;
     protected double forwardVelocity;
 
@@ -57,14 +60,36 @@ public class SimpleEntity extends Entity {
 
         this.stepHeight = 3;
         this.fireResistance = 1;
-        this.width = 0.6F;
-        this.height = 1.8F;
+
+        this.motionClampX = 0.5;
+        this.motionClampY = 0.5;
+        this.motionClampZ = 0.5;
     }
+
+    protected void clampMotion() {
+        if (this.motionX > 0){
+            this.motionX = Math.min(this.motionX, this.motionClampX);
+        } else {
+            this.motionX = Math.max(this.motionX, -this.motionClampX);
+        }
+        if (this.motionY > 0){
+            this.motionY = Math.min(this.motionY, this.motionClampY);
+        } else {
+            this.motionY = Math.max(this.motionY, -this.motionClampY);
+        }
+        if (this.motionZ > 0){
+            this.motionZ = Math.min(this.motionZ, this.motionClampZ);
+        } else {
+            this.motionZ = Math.max(this.motionZ, -this.motionClampZ);
+        }
+    }
+
 
     //region Entity Update
     /**
      * Runs once on entity init
      */
+    //TODO Client side only??
     @Override
     protected void entityInit() {
     }
@@ -73,32 +98,54 @@ public class SimpleEntity extends Entity {
     public void onUpdate() {
         this.applyGravity();
         this.applyForwardVelocity();
+        this.clampMotion();
         this.applyMotion();
         this.onEntityUpdate();
     }
 
     protected void applyGravity() {
         if (this.isGravityEnabled) {
-            this.motionY -= gravityAccel;
+            this.motionY -= this.gravityAccel;
         }
     }
 
     protected void applyForwardVelocity() {
-        this.motionX = this.forwardVelocity * Math.sin(degToRad(this.rotationYaw));
-        this.motionZ = this.forwardVelocity * Math.cos(degToRad(this.rotationYaw));
-        this.forwardVelocity = 0;
+        double theta = degToRad(this.rotationYaw);
+        this.motionX = this.forwardVelocity * Math.sin(theta);
+        this.motionZ = this.forwardVelocity * Math.cos(theta);
     }
 
     protected float degToRad(float deg) {
         return (float) (deg * Math.PI / 180);
     }
 
+    protected float normalizeDegrees(float deg) {
+        float newDeg = deg % 360;
+        if (newDeg < 0) {
+            newDeg += 360;
+        }
+        return newDeg;
+    }
+
     protected void applyMotion() {
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
     }
 
-    protected void rotateEntity(float yawOffset) {
-        setRotation(this.rotationYaw + yawOffset, 0);
+    protected void setYaw(float yaw) {
+        this.rotationYaw = this.normalizeDegrees(yaw);
+    }
+
+    protected void offsetYaw(float yawOffset) {
+        this.setYaw(this.rotationYaw + yawOffset);
+    }
+
+    protected void setPitch(float pitch) {
+        this.rotationPitch = this.normalizeDegrees(pitch);
+
+    }
+
+    protected void offsetPitch(float pitchOffset) {
+        this.setPitch(this.rotationPitch + pitchOffset);
     }
 
     @Override
