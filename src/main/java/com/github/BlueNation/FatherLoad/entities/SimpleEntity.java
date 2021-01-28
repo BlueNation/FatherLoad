@@ -417,7 +417,6 @@ public class SimpleEntity extends Entity {
         double newVelY = velY;
         double newVelZ = velZ;
 
-        @SuppressWarnings("unchecked")
         List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(this,
                 this.boundingBox.addCoord(newVelX, newVelY, newVelZ));
 
