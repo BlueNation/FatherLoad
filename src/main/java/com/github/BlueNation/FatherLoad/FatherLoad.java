@@ -29,6 +29,7 @@ public class FatherLoad {
                 serverSide = "com.github.BlueNation.FatherLoad.proxy.CommonProxy")
     public static CommonProxy proxy;
 
+    public static final XSTR RANDOM = XSTR.XSTR_INSTANCE;
     public static Logger modLog;
 
     public static FatherLoadTab fatherLoadTab;
